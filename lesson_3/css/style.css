@@ -1,0 +1,29 @@
+.header-top p {
+  color: green;
+}
+.header-title {
+  color: red !important;
+  font-size: 50px;
+  font-weight: 700;
+}
+.main-section-1 .main-title {
+  color: yellow;
+}
+.main-section-2 .main-title {
+  color: blue;
+}
+#list {
+  color: red;
+}
+.main-section-3 * {
+  color: rgb(48, 219, 219);
+}
+div.main-section-4 {
+  color: red;
+}
+.footer > p {
+  color: blue;
+}
+ul.list {
+  color: gray;
+}
