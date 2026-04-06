@@ -1,0 +1,115 @@
+/* @import url('https://fonts.googleapis.com/css2?family=DM%20Sans:wght@400;700&display=swap'); */
+/* @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap'); */
+
+body {
+  /* font-family: "DM Sans", sans-serif; */
+  font-family: "InterDisplay";
+}
+.grown-title {
+  font-size: 50px;
+  color: #131313;
+}
+.grown-title span {
+  font-weight: 700;
+  color: #1aaf5b;
+}
+.grown-subtitle {
+  font-size: 20px;
+  line-height: 140%;
+  opacity: 0.6;
+}
+
+.main {
+  color: #1aaf5b;
+}
+.main-weight {
+  font-size: 20px;
+}
+.w-100 {
+  font-weight: 100;
+}
+.w-200 {
+  font-weight: 200;
+}
+.w-300 {
+  font-weight: 300;
+}
+.w-400 {
+  font-weight: 400;
+}
+.w-500 {
+  font-weight: 500;
+}
+.w-600 {
+  font-weight: 600;
+}
+.w-700 {
+  font-weight: 700;
+}
+.w-800 {
+  font-weight: 800;
+}
+.w-900 {
+  font-weight: 900;
+}
+.text-1 {
+  text-align: center;
+}
+.text-2 {
+  text-align: right;
+}
+.text-3 {
+  text-align: justify;
+}
+.decor-1 {
+  text-decoration: overline;
+}
+.decor-2 {
+  text-decoration: underline;
+}
+.decor-3 {
+  text-decoration: line-through;
+}
+.decor-4 {
+  text-decoration: none;
+}
+.decor-5 {
+  text-decoration: line-through;
+  text-decoration-color: #1aaf5b;
+}
+.decor-6 {
+  text-decoration: underline;
+  text-decoration-style: wavy;
+  text-decoration-thickness: 4px;
+}
+.shadow-1 {
+  text-shadow: 10px 10px 5px #000;
+}
+.shadow-2 {
+  text-shadow:
+    2px 2px 2px #000,
+    2px -2px 2px #000;
+}
+.transform-1 {
+  text-transform: capitalize;
+}
+.transform-2 {
+  text-transform: uppercase;
+}
+.transform-3 {
+  text-transform: lowercase;
+}
+.letter-1 {
+  letter-spacing: 1.25px;
+  font-style: italic;
+}
+.letter-2 {
+  line-height: 150%;
+  font-style: oblique;
+}
+.letter-3 {
+  white-space: nowrap;
+}
+.letter-4 {
+  word-spacing: 20px;
+}
