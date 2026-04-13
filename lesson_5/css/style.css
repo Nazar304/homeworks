@@ -1,0 +1,173 @@
+body {
+  font-family: "Poppins", sans-serif;
+  background-color: #333;
+}
+
+.header {
+  min-height: 100%;
+  overflow: hidden;
+}
+
+.container {
+  max-width: 640px;
+  margin: 250px auto;
+}
+
+.header-content {
+  font-family: "Poppins", sans-serif;
+  background-color: #fff3e3;
+  border-radius: 10px;
+  padding: 62px 43px 37px;
+}
+
+.content-text {
+  font-weight: 600;
+  letter-spacing: 0.19em;
+}
+.content-title {
+  font-weight: 700;
+  font-size: 52px;
+  line-height: 1.25;
+  color: #b88e2f;
+  margin: 0px 0px 17px 0px;
+}
+.content-subtitle {
+  font-size: 18px;
+  line-height: 1.3;
+  font-weight: 500;
+  margin: 0px 0px 46px 0px;
+}
+.content-button {
+  display: inline-block;
+  background-color: #b88e2f;
+  color: white;
+  text-transform: uppercase;
+  font-weight: 700;
+  padding: 25px 70px;
+}
+
+.main {
+  color: #fff;
+}
+.main-content {
+  font-weight: 700;
+  font-size: 20px;
+  text-transform: uppercase;
+}
+.content-padding {
+  text-align: center;
+  margin: 0px 0px 30px 0px;
+}
+.content-padding h1 {
+  margin: 0px 0px 10px 0px;
+}
+.example-padding {
+  padding: 40px;
+  background-color: #e08686;
+}
+.example-item {
+  padding: 30px;
+  background-color: #8f0505;
+}
+.example-padding-mod-1 {
+  padding: 30px 0px 30px 0px;
+}
+
+.example-padding-mod-2 {
+  padding: 20px 10px 20px;
+}
+
+.example-padding-mod-3 {
+  padding: 10px 10px 50px 10px;
+}
+.example-padding-mod-4 {
+  padding: 0px 50px 0px;
+}
+
+.content-margin {
+  margin: 0px 0px 30px 0px;
+}
+.margin-item p {
+  text-align: center;
+}
+.margin-item {
+  background-color: #8f0505;
+  padding: 50px;
+  margin: 0px 0px -70px 0px;
+}
+.margin-item-2 {
+  background-color: rgba(80, 82, 212, 0.5);
+  padding: 50px;
+  margin: 0px 0px 30px 0px;
+}
+.content-block-w span {
+  font-weight: 700;
+  color: #8f0505;
+}
+.content-width {
+  margin: 0px 0px 20px 0px;
+}
+.content-widthh {
+  background-color: #37962f;
+  padding: 20px;
+  width: 350px;
+}
+.content-max-width {
+  background-color: #37962f;
+  padding: 20px;
+  margin: 0px 0px 20px 0px;
+  max-width: 500px;
+}
+.content-min-width {
+  padding: 20px;
+  background-color: #37962f;
+  min-width: 300px;
+}
+.content-height {
+  margin: 0px 0px 50px 0px;
+}
+.content-height p {
+  padding: 20px;
+}
+.content-height span {
+  color: #8f0505;
+  font-weight: 700;
+}
+.h-m {
+  margin: 0px 0px 30px 0px;
+}
+.example-block-height p {
+  background-color: #37962f;
+  height: 400px;
+}
+.example-block-max-height p {
+  background-color: #37962f;
+  max-height: 300px;
+}
+.example-block-min-height p {
+  background-color: #37962f;
+  min-height: 200px;
+}
+.content-overflow span {
+  font-weight: 700;
+  color: #8f0505;
+}
+.content-overflow p {
+  background-color: #37962f;
+  padding: 30px;
+  margin: 0px 0px 30px 0px;
+}
+.example-block-overflow-h p {
+  height: 200px;
+  overflow: hidden;
+}
+.example-block-overflow-a p {
+  height: 200px;
+  overflow: auto;
+}
+.example-block-overflow-s {
+  overflow: scroll;
+}
+.example-block-overflow-n {
+  overflow: none;
+}
