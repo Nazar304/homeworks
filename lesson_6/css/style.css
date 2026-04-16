@@ -31,7 +31,7 @@
   margin: 0px 0px 24px 0px;
 }
 .header-list li {
-  background: url("/img/star.svg") 0 5px no-repeat;
+  background: url("../img/star.svg") 0 5px no-repeat;
   min-height: 30px;
   line-height: 1.5;
   color: #b3b3b2;
@@ -41,7 +41,7 @@
 
 .main-page {
   font-family: "Barlow", sans-serif;
-  background: rgba(0, 0, 0, 1) url("/img/logo.png") center / cover no-repeat;
+  background: rgba(0, 0, 0, 1) url("../img/logo.png") center / cover no-repeat;
   max-height: 100%;
   text-align: center;
 }
@@ -69,7 +69,7 @@
 
 .footer-page {
   font-family: "Poppins", sans-serif;
-  background: url("/img/Rectangle\ 1.png") center / cover no-repeat;
+  background: url("../img/Rectangle\ 1.png") center / cover no-repeat;
   text-align: center;
   max-height: 100%;
   margin: 0px 0px 50px 0px;
@@ -87,7 +87,7 @@
   margin: 0px 0px 20px 0px;
 }
 .footer-link {
-  background: url("/img/Vector.svg") right no-repeat;
+  background: url("../img/Vector.svg") right no-repeat;
   padding: 0px 20px 0px 25px;
   font-weight: 500;
 }
@@ -230,7 +230,7 @@
   padding: 0px 0px 0px 50px;
 } */
 .background-image-item {
-  background-image: url("/img/nature.avif");
+  background-image: url("../img/nature.avif");
   background-repeat: no-repeat;
   background-size: cover;
   min-height: 500px;
@@ -239,7 +239,7 @@
   margin: 0px 0px 40px 0px;
 }
 .background-repeat-item {
-  background-image: url("/img/images.jfif");
+  background-image: url("../img/images.jfif");
   min-height: 500px;
 }
 
@@ -247,7 +247,7 @@
   margin: 0px 0px 40px 0px;
 }
 .background-repeat-x-item {
-  background-image: url("/img/images.jfif");
+  background-image: url("../img/images.jfif");
   background-repeat: repeat-x;
   min-height: 500px;
 }
@@ -256,7 +256,7 @@
   margin: 0px 0px 40px 0px;
 }
 .background-repeat-y-item {
-  background-image: url("/img/images.jfif");
+  background-image: url("../img/images.jfif");
   background-repeat: repeat-y;
   min-height: 500px;
 }
@@ -268,7 +268,7 @@
   margin: 0px 0px 40px 0px;
 }
 .background-position-item {
-  background: url("/img/images.jfif") no-repeat 50px 100px;
+  background: url("../img/images.jfif") no-repeat 50px 100px;
   min-height: 500px;
 }
 .bgr-item {
@@ -279,7 +279,7 @@
 }
 .background-attachment-item {
   min-height: 500px;
-  background: url("/img/images.jfif") no-repeat;
+  background: url("../img/images.jfif") no-repeat;
   background-position: center;
   background-attachment: fixed;
 }
@@ -290,7 +290,7 @@
   margin: 0px 0px 40px 0px;
 }
 .background-size-cover-item {
-  background-image: url("/img/images.jfif");
+  background-image: url("../img/images.jfif");
   background-repeat: no-repeat;
   background-size: cover;
   min-height: 500px;
@@ -302,7 +302,7 @@
   margin: 0px 0px 40px 0px;
 }
 .background-size-contain-item {
-  background-image: url("/img/images.jfif");
+  background-image: url("../img/images.jfif");
   background-repeat: no-repeat;
   background-size: contain;
   min-height: 500px;
