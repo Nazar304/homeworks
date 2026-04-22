@@ -1,0 +1,239 @@
+body {
+  max-height: 100%;
+  background: linear-gradient(135deg, #f8fafc, #e6f4ea);
+  font-family: "DM Sans", sans-serif;
+}
+
+.header-page {
+  padding: 100px 0px;
+}
+.container {
+  max-width: 475px;
+  margin: 0 auto;
+}
+.header-text {
+  margin: 0px 0px 100px 0px;
+}
+.header-title::before {
+  content: "";
+  background: linear-gradient(90deg, #12ff46 0%, #000 100%);
+  height: 4px;
+  width: 170px;
+  border-radius: 2px;
+  margin: 0px 0px 17px 0px;
+}
+.header-title {
+  margin: 0px 0px 20px 0px;
+}
+
+.header-title h1 {
+  font-size: 50px;
+}
+.header-title span {
+  font-weight: 700;
+  color: #1aaf5b;
+}
+
+.header-subtitle {
+  font-size: 20px;
+  line-height: 1.4;
+  margin: 0px 0px 58px 0px;
+}
+
+.header-button {
+  font-weight: 700;
+  font-size: 17px;
+  background-color: #1aaf5b;
+  border-radius: 0px 18px 0px 0px;
+  color: #fff;
+  padding: 25px 40px;
+}
+
+.header-button span::after {
+  content: "";
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  background-image: url("../img/Path.svg");
+  background-repeat: no-repeat;
+  background-position: right 10px;
+  padding: 0px 0px 0px 39px;
+}
+
+.main-game {
+  padding: 0px 0px 70px 0px;
+}
+.game-container {
+  max-width: 1530px;
+  margin: 0 auto;
+}
+.game-title {
+  font-size: 25px;
+  text-transform: uppercase;
+  font-weight: 700;
+  text-align: center;
+  margin: 0px 0px 15px 0px;
+}
+.game-subtitle {
+  font-size: 18px;
+  opacity: 0.7;
+  text-align: center;
+  margin: 0px 0px 50px 0px;
+}
+.gameplay-bg {
+  background-color: #131313;
+  min-height: 400px;
+}
+.gameplay-start {
+  font-weight: 700;
+  font-size: 45px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+.gameplay-start p::after {
+  content: "";
+  display: inline-block;
+  background-color: #000;
+  margin: 0px 0px 0px 20px;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+}
+.gameplay:hover {
+  background-color: #fff;
+}
+.gameplay:nth-child(1) {
+  width: 30px;
+  height: 80px;
+  margin: 0px 0px 0px 166px;
+}
+.gameplay:nth-child(2) {
+  width: 180px;
+  height: 30px;
+  margin: 0px 0px 0px 166px;
+}
+.gameplay:nth-child(3) {
+  height: 30px;
+  width: 70px;
+  margin: 0px 0px 0px 310px;
+}
+.gameplay:nth-child(4) {
+  height: 150px;
+  width: 30px;
+  margin: 0px 0px 0px 350px;
+}
+.gameplay:nth-child(5) {
+  height: 30px;
+  width: 200px;
+  margin: 0px 0px 0px 350px;
+}
+.gameplay:nth-child(6) {
+  width: 30px;
+  height: 40px;
+  margin: 0px 0px 0px 520px;
+}
+.gameplay-text:hover {
+  background-color: #fff;
+}
+.gameplay-text {
+  color: #131313;
+  line-height: 1.5;
+  text-transform: uppercase;
+  text-align: center;
+  max-width: 70px;
+  border-radius: 10px;
+  padding: 10px;
+  margin: 0px 0px 0px 500px;
+}
+
+.footer-container {
+  max-width: 1180px;
+  margin: 0 auto;
+}
+.footer-text {
+  font-size: 30px;
+  line-height: 1.2;
+}
+.footer-list {
+  margin: 0px 0px 17px 0px;
+}
+.footer-list li:not(:last-child) {
+  margin: 0px 0px 17px 0px;
+}
+
+.footer-list li:nth-of-type(1) {
+  color: red;
+}
+.footer-list li:nth-of-type(2) {
+  text-transform: uppercase;
+}
+.footer-list li:nth-of-type(3) {
+  text-decoration: underline;
+}
+.footer-list li:nth-of-type(4) {
+  font-style: italic;
+}
+.footer-list li:nth-of-type(5) {
+  font-weight: 700;
+}
+.footer-list li:nth-of-type(6) {
+  font-size: 35px;
+}
+.footer-list-2 {
+  margin: 0px 0px 17px 0px;
+}
+.footer-list-2 li:not(:last-child) {
+  margin: 0px 0px 17px 0px;
+}
+
+.footer-list-2 li:first-of-type {
+  color: blue;
+}
+.footer-list-2 li:nth-child(2) {
+  color: #12ff46;
+}
+.footer-list-2 li:nth-child(3) {
+  color: #12ff46;
+}
+.footer-list-2 li:nth-child(4) {
+  color: #12ff46;
+}
+.footer-list-2 li:nth-child(5) {
+  color: #12ff46;
+}
+.footer-list-2 li:last-of-type {
+  color: blue;
+}
+
+.footer-list-3 {
+  margin: 0px 0px 17px 0px;
+}
+
+.footer-list-3 li:nth-child(odd) {
+  color: red;
+}
+
+.footer-list-4 {
+  margin: 0px 0px 17px 0px;
+}
+
+.footer-list-4 li:nth-child(even) {
+  color: blueviolet;
+}
+
+.footer-list-5 {
+  margin: 0px 0px 17px 0px;
+}
+.footer-list-5 {
+  text-transform: uppercase;
+}
+
+a.footer-link-1:active {
+  background-color: blue;
+}
+a.footer-link-2:visited {
+  color: blue;
+}
+a.footer-link-3:focus {
+  outline: 10px solid #000;
+}
