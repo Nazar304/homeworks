@@ -1,0 +1,27 @@
+<!doctype html>
+<!--
+  Регресія геометрії. Відкрий подвійним кліком — усе порахується само.
+  Node на машині немає, тому стенд браузерний; у headless ганяється так:
+
+    chrome --headless=new --disable-gpu --virtual-time-budget=60000 \
+           --dump-dom "file:///.../box-generator/test/index.html"
+
+  Внизу сторінки — рядок «### УСЕ ЧИСТО — N/N» або перелік провалів.
+-->
+<html lang="uk">
+<head>
+  <meta charset="utf-8">
+  <title>BoxGen · регресія геометрії</title>
+  <style>
+    body { background: #080c18; color: #e8ecf8; margin: 0; padding: 18px;
+           font: 13px/1.5 ui-monospace, Consolas, monospace; }
+    pre { margin: 0; white-space: pre-wrap; }
+  </style>
+</head>
+<body>
+<pre id="out">рахую…</pre>
+<script src="../js/geometry.js"></script>
+<script src="../js/gears.js"></script>
+<script src="suite.js"></script>
+</body>
+</html>

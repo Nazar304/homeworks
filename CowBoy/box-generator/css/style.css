@@ -1,0 +1,618 @@
+/* =============================================================================
+ *  style.css — Генератор коробок
+ *  Розкладка: [ панель параметрів | розкрій | цифри ]
+ *
+ *  Темна панель приладів: глибокий синій фон, скляні картки, електричний
+ *  синій як основний акцент і бірюза як другий. Світла тема лишається —
+ *  перевизначає ті самі змінні.
+ * ========================================================================== */
+
+/* ---------- 1. Змінні й база ---------- */
+:root {
+  /* тло */
+  --bg: #080c18;
+  --bg-deep: #05080f;
+  --bg-2: #0d1426;
+  --bg-3: #131c33;
+  --bg-4: #1a2440;
+
+  /* лінії */
+  --line: rgba(150, 175, 235, .13);
+  --line-2: rgba(150, 175, 235, .26);
+
+  /* текст */
+  --txt: #e8ecf8;
+  --txt-dim: #98a6cc;
+  --txt-mute: #64719a;
+
+  /* акценти */
+  --accent: #4c7dff;
+  --accent-2: #1d4ed8;
+  --accent-soft: rgba(76, 125, 255, .15);
+  --accent-glow: rgba(76, 125, 255, .45);
+  --teal: #22d3ee;
+  --ok: #34d399;
+  --warn: #fbbf24;
+  --err: #fb7185;
+
+  /* Кольори тексту на підсвічених плашках тримаємо окремо: у світлій темі
+     ті самі світлі відтінки на білому просто не читаються. */
+  --chip-on-txt: #a8c2ff;
+  --grad-1: #7aa2ff;
+  --grad-2: #8fb0ff;
+  --warn-txt: #f8d477;
+  --err-txt: #ffa3b0;
+  --ok-txt: #7ce6bb;
+
+  /* розкрій */
+  --sheet: #0b1220;
+  --cut: #5b8cff;
+  --cut-fill: rgba(76, 125, 255, .10);
+  --engrave: #22d3ee;
+
+  --radius: 14px;
+  --radius-sm: 9px;
+  --mono: ui-monospace, "JetBrains Mono", "Cascadia Mono", Consolas, monospace;
+  --shadow: 0 18px 40px rgba(0, 0, 0, .55);
+}
+
+:root.light {
+  --bg: #eef1f7;
+  --bg-deep: #e4e9f2;
+  --bg-2: #ffffff;
+  --bg-3: #f2f5fb;
+  --bg-4: #e7ecf6;
+  --line: rgba(30, 50, 100, .13);
+  --line-2: rgba(30, 50, 100, .26);
+  --txt: #101728;
+  --txt-dim: #4a5675;
+  --txt-mute: #7b87a6;
+  --accent: #2563eb;
+  --accent-2: #1d4ed8;
+  --accent-soft: rgba(37, 99, 235, .10);
+  --accent-glow: rgba(37, 99, 235, .28);
+  --sheet: #ffffff;
+  --cut: #1e2a44;
+  --cut-fill: rgba(37, 99, 235, .07);
+  --engrave: #b04a1e;
+  --shadow: 0 12px 28px rgba(30, 50, 100, .16);
+
+  --teal: #0891b2;
+  --ok: #059669;
+  --warn: #d97706;
+  --err: #dc2626;
+  --chip-on-txt: #1d4ed8;
+  --grad-1: #1d4ed8;
+  --grad-2: #2563eb;
+  --warn-txt: #92600a;
+  --err-txt: #9f1239;
+  --ok-txt: #065f46;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background: var(--bg);
+  color: var(--txt);
+  font: 14px/1.5 "Inter", system-ui, "Segoe UI", Roboto, sans-serif;
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+button, input, select { font: inherit; color: inherit; }
+
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: var(--line-2);
+  border-radius: 8px;
+  border: 3px solid transparent;
+  background-clip: content-box;
+}
+::-webkit-scrollbar-thumb:hover { background: var(--accent); background-clip: content-box; }
+
+::selection { background: var(--accent-glow); color: #fff; }
+
+/* ---------- 2. Каркас ---------- */
+.hidden { display: none !important; }
+
+.app {
+  display: grid;
+  grid-template-columns: 336px minmax(0, 1fr) 288px;
+  grid-template-rows: 56px minmax(0, 1fr);
+  grid-template-areas: "top top top" "side main aside";
+  height: 100vh;
+  gap: 10px;
+  padding: 10px;
+  /* м'яке синє світло згори, як у панелях приладів */
+  background:
+    radial-gradient(120% 80% at 50% -10%, rgba(76, 125, 255, .16), transparent 60%),
+    radial-gradient(80% 60% at 100% 100%, rgba(34, 211, 238, .07), transparent 60%),
+    var(--bg-deep);
+}
+
+/* Поки жоден генератор не ввімкнений, цифрам нема про що звітувати —
+   права колонка йде разом із ними. */
+.app.no-aside {
+  grid-template-columns: 336px minmax(0, 1fr);
+  grid-template-areas: "top top" "side main";
+}
+.app.no-aside .aside { display: none; }
+
+/* Генератори в панелі: шапка завжди видима, параметри під нею розкриваються
+   кліком. Ширина панелі при цьому не стрибає — поле під розкрій має бути
+   однакове і згорнутим, і розгорнутим. */
+.gen { border-bottom: 1px solid var(--line); }
+.gen-body { display: none; }
+.gen.open .gen-body { display: block; }
+.gen.open .gen-head { color: var(--accent); }
+.gen.open .gen-chev { transform: rotate(180deg); }
+.gen-soon {
+  padding: 16px;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--txt-mute);
+}
+
+.gen-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 14px 16px;
+  cursor: pointer;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  color: var(--txt);
+  font-size: 14px;
+  font-weight: 600;
+  text-align: left;
+  white-space: nowrap;
+}
+.gen-head:hover { background: var(--bg-3); }
+.gen-ico { font-size: 18px; line-height: 1; }
+.gen-name { flex: 1; }
+.gen-chev {
+  color: var(--txt-mute);
+  font-size: 11px;
+  transition: transform .15s;
+}
+
+/* спільний вигляд «скляної картки» */
+.topbar, .sidebar, .main, .aside {
+  background: var(--bg-2);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow), inset 0 1px 0 rgba(255, 255, 255, .04);
+}
+
+.topbar {
+  grid-area: top;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 14px;
+}
+
+.brand {
+  display: flex;
+  align-items: baseline;
+  gap: 9px;
+  font-weight: 700;
+  letter-spacing: -.2px;
+}
+.brand b {
+  background: linear-gradient(135deg, var(--grad-1), var(--accent) 45%, var(--teal));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-size: 16px;
+}
+.brand small { color: var(--txt-mute); font-weight: 400; font-size: 11px; }
+
+.topbar .spacer { flex: 1; }
+
+.sidebar {
+  grid-area: side;
+  overflow-y: auto;
+  width: 336px;
+  padding-bottom: 24px;
+}
+
+.main {
+  grid-area: main;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.aside {
+  grid-area: aside;
+  overflow-y: auto;
+  padding-bottom: 24px;
+}
+
+/* ---------- 3. Групи параметрів ---------- */
+.group { border-bottom: 1px solid var(--line); }
+.group:last-of-type { border-bottom: 0; }
+
+.group > summary {
+  cursor: pointer;
+  padding: 13px 16px;
+  font-weight: 600;
+  font-size: 11px;
+  letter-spacing: .8px;
+  text-transform: uppercase;
+  color: var(--txt-mute);
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  user-select: none;
+  transition: color .15s;
+}
+.group > summary::-webkit-details-marker { display: none; }
+.group > summary::before {
+  content: "";
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--line-2);
+  transition: all .2s;
+  flex: 0 0 auto;
+}
+.group[open] > summary::before {
+  background: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+.group > summary:hover { color: var(--txt); }
+
+.group-body { padding: 2px 16px 16px; display: grid; gap: 10px; }
+
+.row {
+  display: grid;
+  grid-template-columns: 1fr 92px;
+  align-items: center;
+  gap: 10px;
+}
+.row > label { color: var(--txt-dim); font-size: 13px; line-height: 1.3; }
+.row > label .hint { color: var(--txt-mute); font-size: 10.5px; display: block; margin-top: 1px; }
+
+.row-full { grid-template-columns: 1fr; }
+
+input[type="number"], input[type="text"], select {
+  background: var(--bg-3);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  padding: 7px 9px;
+  width: 100%;
+  min-width: 0;
+  color: var(--txt);
+  transition: border-color .15s, box-shadow .15s, background .15s;
+}
+input[type="number"], input[type="text"] {
+  font-family: var(--mono);
+  text-align: right;
+  font-size: 13px;
+}
+select {
+  appearance: none;
+  background-image: linear-gradient(45deg, transparent 50%, var(--txt-mute) 50%),
+                    linear-gradient(135deg, var(--txt-mute) 50%, transparent 50%);
+  background-position: calc(100% - 15px) 51%, calc(100% - 10px) 51%;
+  background-size: 5px 5px, 5px 5px;
+  background-repeat: no-repeat;
+  padding-right: 26px;
+  cursor: pointer;
+}
+input:hover, select:hover { border-color: var(--line-2); }
+input:focus, select:focus {
+  outline: none;
+  border-color: var(--accent);
+  background: var(--bg-4);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+input:invalid { border-color: var(--err); }
+
+/* сегментований перемикач */
+.seg {
+  display: flex;
+  background: var(--bg-3);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  padding: 3px;
+  gap: 3px;
+}
+.seg button {
+  flex: 1;
+  background: transparent;
+  border: 0;
+  border-radius: 6px;
+  padding: 6px 4px;
+  cursor: pointer;
+  color: var(--txt-dim);
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+  transition: all .15s;
+}
+.seg button:hover { background: var(--bg-4); color: var(--txt); }
+.seg button.on {
+  background: linear-gradient(180deg, var(--accent), var(--accent-2));
+  color: #fff;
+  font-weight: 600;
+  box-shadow: 0 2px 10px var(--accent-glow);
+}
+
+.faces {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 7px;
+}
+.chip {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 8px 4px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--bg-3);
+  cursor: pointer;
+  font-size: 12px;
+  color: var(--txt-mute);
+  user-select: none;
+  transition: all .15s;
+}
+.chip input { display: none; }
+.chip:hover { border-color: var(--line-2); color: var(--txt-dim); }
+.chip.on {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+  color: var(--chip-on-txt);
+  font-weight: 500;
+  box-shadow: inset 0 0 14px rgba(76, 125, 255, .12);
+}
+
+/* ---------- 4. Кнопки ---------- */
+.btn {
+  background: var(--bg-3);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  padding: 7px 12px;
+  cursor: pointer;
+  color: var(--txt-dim);
+  white-space: nowrap;
+  transition: all .15s;
+  font-size: 13px;
+  font-weight: 500;
+}
+.btn:hover { background: var(--bg-4); color: var(--txt); border-color: var(--line-2); }
+.btn:active { transform: translateY(1px); }
+.btn.primary {
+  background: linear-gradient(180deg, var(--accent), var(--accent-2));
+  border-color: transparent;
+  color: #fff;
+  font-weight: 600;
+  box-shadow: 0 4px 16px var(--accent-glow);
+}
+.btn.primary:hover { filter: brightness(1.12); box-shadow: 0 6px 22px var(--accent-glow); }
+.btn.icon { padding: 7px 10px; font-size: 15px; line-height: 1; }
+.btn.wide { width: 100%; justify-content: center; }
+
+/* ---------- 5. Панель інструментів над розкроєм ---------- */
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--line);
+  flex-wrap: wrap;
+  flex: 0 0 auto;
+}
+.toolbar .sep { width: 1px; height: 22px; background: var(--line); }
+.toolbar .spacer { flex: 1; }
+.zoomval {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--txt-mute);
+  min-width: 46px;
+  text-align: center;
+}
+
+/* ---------- 6. Полотно розкрою ---------- */
+.canvas {
+  flex: 1;
+  overflow: auto;
+  cursor: grab;
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  /* саме flex-start, а не center: відцентрований flex-елемент, який ширший за
+     контейнер, вилазить лівим краєм у від'ємну зону, а туди scrollLeft не
+     дістає — половина листа стає недосяжною. Центрує margin: auto нижче, він
+     просто стискається до нуля, коли лист уже не влазить. */
+  align-items: flex-start;
+  gap: 24px;
+  background:
+    radial-gradient(circle at 1px 1px, var(--line) 1px, transparent 0) 0 0 / 24px 24px;
+}
+
+/* поки тягнеш лист — курсор «схопив», і текст підписів не виділяється */
+.canvas.grabbing { cursor: grabbing; user-select: none; }
+.canvas.grabbing .sheet { pointer-events: none; }
+
+.sheet-wrap { flex: 0 0 auto; margin: 0 auto; }
+
+/* механізм: ті самі контури, що поїдуть на верстат, тільки розставлені в
+   зачеплення й закручені */
+svg.mech .cut { fill: var(--cut-fill); }
+svg.mech .axle { fill: var(--cut); opacity: .8; }
+.gear-list .stat b .hint { font-family: var(--mono); }
+.sheet-cap {
+  font-size: 11px;
+  color: var(--txt-mute);
+  font-family: var(--mono);
+  margin-bottom: 7px;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+.sheet-cap b { color: var(--txt-dim); font-weight: 600; }
+
+svg.sheet {
+  background: var(--sheet);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+  display: block;
+}
+svg.sheet .cut {
+  fill: var(--cut-fill);
+  stroke: var(--cut);
+  stroke-width: 1.1;
+  vector-effect: non-scaling-stroke;
+  filter: drop-shadow(0 0 2px var(--accent-glow));
+  transition: fill .12s;
+}
+svg.sheet .cut:hover { fill: rgba(34, 211, 238, .22); stroke: var(--teal); }
+svg.sheet .lbl {
+  fill: var(--engrave);
+  font-family: "Inter", system-ui, sans-serif;
+  font-weight: 500;
+  text-anchor: middle;
+  dominant-baseline: middle;
+  pointer-events: none;
+}
+
+.empty {
+  color: var(--txt-mute);
+  text-align: center;
+  margin: 0 auto;
+  padding: 70px 20px;
+  font-size: 15px;
+}
+
+/* ---------- 6b. Прев'ю зібраної коробки ----------
+   Ізометрія малюється як звичайний SVG: грані — багатокутники, глибина
+   вирішена порядком малювання. Тому все, що тут треба, — це кольори. */
+.view3d { display: block; }
+.view3d svg { display: block; width: 100%; height: auto; overflow: visible; }
+.view3d polygon {
+  stroke: var(--cut);
+  stroke-width: .9;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+.view3d .f-top { fill: rgba(76, 125, 255, .58); }
+.view3d .f-side { fill: rgba(76, 125, 255, .40); }
+.view3d .f-front { fill: rgba(76, 125, 255, .24); }
+/* кришка напівпрозора — інакше вона з'їдає все, заради чого прев'ю й дивляться */
+.view3d .ghost { fill-opacity: .16; stroke-opacity: .45; }
+:root.light .view3d .f-top { fill: rgba(37, 99, 235, .42); }
+:root.light .view3d .f-side { fill: rgba(37, 99, 235, .26); }
+:root.light .view3d .f-front { fill: rgba(37, 99, 235, .14); }
+
+/* ---------- 7. Цифри ---------- */
+.stat-block { padding: 14px 16px; border-bottom: 1px solid var(--line); }
+.stat-block:last-child { border-bottom: 0; }
+.stat-title {
+  font-size: 10.5px;
+  letter-spacing: .9px;
+  text-transform: uppercase;
+  color: var(--txt-mute);
+  margin: 0 0 10px;
+  font-weight: 600;
+}
+.stat {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 10px;
+  padding: 4px 0;
+  font-size: 13px;
+}
+.stat span { color: var(--txt-dim); }
+.stat b { font-family: var(--mono); font-weight: 600; font-size: 12.5px; }
+
+.warns { display: grid; gap: 7px; }
+.warn-item {
+  background: rgba(251, 191, 36, .09);
+  border: 1px solid rgba(251, 191, 36, .22);
+  border-left: 3px solid var(--warn);
+  border-radius: var(--radius-sm);
+  padding: 8px 10px;
+  font-size: 11.5px;
+  line-height: 1.45;
+  color: var(--warn-txt);
+}
+.warn-item.err {
+  background: rgba(251, 113, 133, .09);
+  border-color: rgba(251, 113, 133, .22);
+  border-left-color: var(--err);
+  color: var(--err-txt);
+}
+.warn-item.ok {
+  background: rgba(52, 211, 153, .09);
+  border-color: rgba(52, 211, 153, .22);
+  border-left-color: var(--ok);
+  color: var(--ok-txt);
+}
+
+/* ---------- 8. Тост ---------- */
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 26px;
+  transform: translate(-50%, 20px);
+  max-width: min(560px, 92vw);
+  background: var(--bg-3);
+  border: 1px solid var(--line-2);
+  border-left: 3px solid var(--teal);
+  border-radius: var(--radius);
+  padding: 12px 18px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, .6);
+  opacity: 0;
+  pointer-events: none;
+  transition: all .25s cubic-bezier(.2, .8, .2, 1);
+  z-index: 50;
+  font-size: 13px;
+  line-height: 1.45;
+}
+.toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+/* ---------- 9. Адаптив ---------- */
+@media (max-width: 1240px) {
+  .app { grid-template-columns: 316px minmax(0, 1fr); grid-template-areas: "top top" "side main"; }
+  .aside { display: none; }
+}
+@media (max-width: 860px) {
+  body { overflow: auto; }
+  .app {
+    grid-template-columns: 1fr;
+    grid-template-rows: 56px auto auto;
+    grid-template-areas: "top" "side" "main";
+    height: auto;
+  }
+  .canvas { padding: 12px; }
+  .topbar { flex-wrap: wrap; height: auto; padding: 10px 12px; }
+}
+
+@media print {
+  .home, .sidebar, .aside, .topbar, .toolbar { display: none !important; }
+  .app { display: block; padding: 0; background: #fff; gap: 0; }
+  .main { border: 0; border-radius: 0; box-shadow: none; background: #fff; }
+  .canvas { padding: 0; background: #fff; }
+  /* на папері різ мусить бути чорним по білому, без світінь */
+  svg.sheet { box-shadow: none; border: 0; background: #fff; border-radius: 0; }
+  svg.sheet .cut { fill: none; stroke: #000; stroke-width: .4; filter: none; }
+  svg.sheet .lbl { fill: #000; }
+  .sheet-cap { color: #000; }
+}
