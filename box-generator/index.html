@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="uk">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Генератор коробок · шипи-пази для лазерної різки</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='26' font-size='26'>📦</text></svg>">
+</head>
+<body>
+
+<div class="app" id="appBox">
+
+  <!-- ══════════════════ ВЕРХНЯ ПАНЕЛЬ ══════════════════ -->
+  <header class="topbar">
+    <div class="brand"><b>📦 BoxGen</b> <small>Laser Cut</small></div>
+    <div class="spacer"></div>
+    <button class="btn icon" id="btnTheme" title="Світла / темна тема">🌗</button>
+  </header>
+
+  <!-- ══════════════════ ПАРАМЕТРИ ══════════════════ -->
+  <aside class="sidebar">
+
+    <!-- Генератор — це шапка плюс усі його параметри під нею.
+         Кожен наступний стає такою самою секцією нижче. -->
+    <section class="gen" id="genBox">
+    <button class="gen-head">
+      <span class="gen-ico">📦</span>
+      <span class="gen-name">Генератор коробок</span>
+      <span class="gen-chev">▾</span>
+    </button>
+
+    <div class="gen-body">
+
+    <details class="group" open>
+      <summary>Габарити</summary>
+      <div class="group-body">
+        <div class="seg" id="dimSeg">
+          <button data-dim="outer" class="on">Зовнішні</button>
+          <button data-dim="inner">Внутрішні</button>
+        </div>
+        <div class="row"><label>Ширина <span class="hint">по X</span></label><input type="number" id="W" value="200" min="10" step="1"></div>
+        <div class="row"><label>Глибина <span class="hint">по Y</span></label><input type="number" id="D" value="150" min="10" step="1"></div>
+        <div class="row"><label>Висота <span class="hint">по Z</span></label><input type="number" id="H" value="100" min="10" step="1"></div>
+      </div>
+    </details>
+
+    <details class="group" open>
+      <summary>Матеріал і різ</summary>
+      <div class="group-body">
+        <div class="row row-full"><select id="matSel" title="Профіль матеріалу — підтягує товщину, kerf, крок шипа і посадку"></select></div>
+
+        <div class="seg" id="jointSeg" title="Ящиковий шип — гребінка по ребру, видно з торця. Шип у гніздо — шип проходить крізь гніздо в площині сусідньої деталі: ребра рівні, стінки втоплені на товщину">
+          <button data-joint="finger" class="on">Зовнішні шипи</button>
+          <button data-joint="tslot">Забивні пази</button>
+        </div>
+
+        <div class="seg" id="fitSeg" title="Тип посадки з'єднання">
+          <button data-fit="free">Вільна</button>
+          <button data-fit="press" class="on">Забивна</button>
+          <button data-fit="tight">Внатяг</button>
+        </div>
+
+        <div class="row"><label>Товщина матеріалу <span class="hint">заміряна, не з цінника</span></label><input type="number" id="t" value="4" min="0.5" step="0.1"></div>
+        <div class="row"><label>Крок шипа <span class="hint">бажаний, підганяється</span></label><input type="number" id="finger" value="12" min="1" step="1"></div>
+        <div class="row"><label>Ширина різу <span class="hint">kerf, ≈0.15 мм</span></label><input type="number" id="kerf" value="0.16" min="0" step="0.01"></div>
+        <div class="row"><label>Зазор посадки <span class="hint">рахується з товщини</span></label><input type="number" id="fit" value="-0.025" min="-0.5" max="1" step="0.001"></div>
+      </div>
+    </details>
+
+    <details class="group" open>
+      <summary>Стінки</summary>
+      <div class="group-body">
+        <div class="faces" id="faces">
+          <label class="chip on"><input type="checkbox" data-face="top" checked>Кришка</label>
+          <label class="chip on"><input type="checkbox" data-face="bottom" checked>Дно</label>
+          <label class="chip on"><input type="checkbox" data-face="front" checked>Перед</label>
+          <label class="chip on"><input type="checkbox" data-face="back" checked>Зад</label>
+          <label class="chip on"><input type="checkbox" data-face="left" checked>Ліва</label>
+          <label class="chip on"><input type="checkbox" data-face="right" checked>Права</label>
+        </div>
+        <div class="seg" id="quickShape">
+          <button data-shape="closed">Закрита</button>
+          <button data-shape="open">Без кришки</button>
+        </div>
+      </div>
+    </details>
+
+    <details class="group" open>
+      <summary>Перегородки</summary>
+      <div class="group-body">
+        <div class="row"><label>Поперек ширини <span class="hint">ділять на секції по X</span></label><input type="number" id="divX" value="0" min="0" max="12" step="1"></div>
+        <div class="row"><label>Поперек глибини <span class="hint">ділять на секції по Y</span></label><input type="number" id="divY" value="0" min="0" max="12" step="1"></div>
+
+
+        <div class="stat"><span>Секцій усього</span><b id="cellCount">1</b></div>
+        <div class="stat"><span>Розмір секції</span><b id="cellSize">—</b></div>
+      </div>
+    </details>
+
+    <details class="group" open>
+      <summary>Підписи деталей</summary>
+      <div class="group-body">
+        <div class="seg" id="labelSeg">
+          <button data-lbl="none">Без підписів</button>
+          <button data-lbl="preview" class="on">Тільки прев'ю</button>
+        </div>
+      </div>
+    </details>
+
+    <div style="padding:14px">
+      <button class="btn wide" id="btnReset">↺ Скинути до типових</button>
+    </div>
+
+    </div><!-- /gen-body -->
+    </section>
+
+    <section class="gen" id="genGear">
+      <button class="gen-head">
+        <span class="gen-ico">⚙️</span>
+        <span class="gen-name">Генератор шестерень</span>
+        <span class="gen-chev">▾</span>
+      </button>
+      <div class="gen-body">
+
+        <details class="group" open>
+          <summary>Зуби</summary>
+          <div class="group-body">
+            <div class="seg" id="gSizeSeg" title="Чим задаєш шестерні: кількістю зубів чи діаметром у міліметрах">
+              <button data-gsize="dia" class="on">Діаметр, мм</button>
+              <button data-gsize="teeth">Зуби</button>
+            </div>
+            <div class="row"><label>Скільки шестерень <span class="hint">1–8, зчеплені по черзі</span></label><input type="number" id="gcount" value="3" min="1" max="8" step="1"></div>
+            <div id="gRows"></div>
+            <div class="row"><label>Модуль <span class="hint">розмір зуба, мм</span></label><input type="number" id="gm" value="3" min="0.5" max="20" step="0.5"></div>
+            <button class="btn wide" id="gFit" title="Підібрати модуль так, щоб задані діаметри вийшли якнайточніше">⌖ Підігнати модуль під розміри</button>
+            <div class="stat"><span>Зубів</span><b id="gRatio">—</b></div>
+            <div class="stat"><span>Міжосьові</span><b id="gAxis">—</b></div>
+          </div>
+        </details>
+
+        <details class="group" open>
+          <summary>Диск</summary>
+          <div class="group-body">
+            <div class="row"><label>Центральний отвір <span class="hint">⌀ мм, 0 — без нього</span></label><input type="number" id="gbore" value="5" min="0" step="0.5"></div>
+            <div class="row"><label>Отвори в середині шестерні <span class="hint">полегшення, 0 — суцільна</span></label><input type="number" id="gspokes" value="5" min="0" max="12" step="1"></div>
+            <div class="row"><label>Кут між осями <span class="hint">0° — в лінію, 30° — зигзаг</span></label><input type="number" id="gangle" value="30" min="-90" max="90" step="5"></div>
+          </div>
+        </details>
+
+        <details class="group" open>
+          <summary>Різ</summary>
+          <div class="group-body">
+            <div class="row"><label>Ширина різу <span class="hint">kerf, ≈0.15 мм</span></label><input type="number" id="gkerf" value="0.16" min="0" step="0.01"></div>
+            <div class="row"><label>Люфт у зачепленні <span class="hint">по дузі, 0.1–0.3 мм</span></label><input type="number" id="gback" value="0.15" min="0" max="2" step="0.05"></div>
+          </div>
+        </details>
+
+        <div style="padding:14px">
+          <button class="btn wide" id="gReset">↺ Скинути до типових</button>
+        </div>
+      </div>
+    </section>
+  </aside>
+
+  <!-- ══════════════════ РОЗКРІЙ ══════════════════ -->
+  <main class="main">
+    <div class="toolbar">
+      <button class="btn icon" id="zoomOut" title="Зменшити">−</button>
+      <div class="zoomval" id="zoomVal">100%</div>
+      <button class="btn icon" id="zoomIn" title="Збільшити">+</button>
+      <div class="sep"></div>
+      <div class="seg hidden" id="viewSeg" title="Що показувати на полі">
+        <button data-view="mech" class="on">Механізм</button>
+        <button data-view="cut">Розкрій</button>
+      </div>
+      <button class="btn primary" id="btnSvg">⬇ SVG</button>
+      <button class="btn" id="btnDxf">⬇ DXF</button>
+      <button class="btn" id="btnPrint">🖨 Друк</button>
+      <div class="spacer"></div>
+      <span class="zoomval" id="sheetInfo"></span>
+    </div>
+    <div class="canvas" id="canvas"></div>
+  </main>
+
+  <!-- ══════════════════ ЦИФРИ ══════════════════ -->
+  <aside class="aside">
+    <div id="asideGear" class="hidden">
+      <div class="stat-block">
+        <h3 class="stat-title">Передача</h3>
+        <div class="stat"><span>Шестерень</span><b id="gCount">—</b></div>
+        <div class="stat"><span>Модуль</span><b id="gMod">—</b></div>
+        <div class="stat"><span>Габарит</span><b id="gSize">—</b></div>
+      </div>
+      <div class="stat-block">
+        <h3 class="stat-title">Діаметри, мм</h3>
+        <div class="gear-list" id="gList"></div>
+      </div>
+      <div class="stat-block">
+        <h3 class="stat-title">Розкрій</h3>
+        <div class="stat"><span>Лист <span class="hint">авто</span></span><b id="gSheet">—</b></div>
+        <div class="stat"><span>Довжина різу</span><b id="gCut">—</b></div>
+      </div>
+      <div class="stat-block">
+        <h3 class="stat-title">Перевірка</h3>
+        <div class="warns" id="gWarns"></div>
+      </div>
+    </div>
+
+    <div id="asideBox">
+    <div class="stat-block">
+      <h3 class="stat-title">Як виглядатиме</h3>
+      <div class="view3d" id="view3d"></div>
+    </div>
+
+    <div class="stat-block">
+      <h3 class="stat-title">Габарити</h3>
+      <div class="stat"><span>Зовні</span><b id="oOuter">—</b></div>
+      <div class="stat"><span>Всередині</span><b id="oInner">—</b></div>
+      <div class="stat"><span>Об'єм</span><b id="oVol">—</b></div>
+      <div class="stat"><span>Кришка</span><b id="oLid">—</b></div>
+      <div class="stat"><span id="oFingersLbl">Шипів W / D / H</span><b id="oFingers">—</b></div>
+      <div class="stat"><span>Крок шипа</span><b id="oStep">—</b></div>
+    </div>
+
+    <div class="stat-block">
+      <h3 class="stat-title">Розкрій</h3>
+      <div class="stat"><span>Деталей</span><b id="oParts">—</b></div>
+      <div class="stat"><span>Лист <span class="hint">авто</span></span><b id="oSheet">—</b></div>
+      <div class="stat"><span>Довжина різу</span><b id="oCut">—</b></div>
+    </div>
+
+    <div class="stat-block">
+      <h3 class="stat-title">Перевірка</h3>
+      <div class="warns" id="warns"></div>
+    </div>
+    </div><!-- /asideBox -->
+  </aside>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="js/geometry.js"></script>
+<script src="js/gears.js"></script>
+<script src="js/export.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
